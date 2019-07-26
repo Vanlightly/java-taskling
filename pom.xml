@@ -11,6 +11,7 @@
     <modules>
         <module>taskling-sqlserver</module>
         <module>taskling-core</module>
+        <module>taskling-sqlserver-examples</module>
     </modules>
 
     <licenses>
