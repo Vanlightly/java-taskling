@@ -84,6 +84,7 @@ public class CriticalSectionRepositoryMsSql extends DbOperationsService implemen
             query = QueriesTokens.ReturnClientCriticalSectionTokenQuery;
 
         try (Connection connection = createNewConnection(taskId)) {
+            connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
             NamedParameterStatement p= new NamedParameterStatement(connection, query);
@@ -103,6 +104,7 @@ public class CriticalSectionRepositoryMsSql extends DbOperationsService implemen
         boolean granted = false;
 
         try (Connection connection = createNewConnection(taskId)) {
+            connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
             acquireRowLock(taskDefinitionId, taskExecutionId, connection);
@@ -286,7 +288,7 @@ public class CriticalSectionRepositoryMsSql extends DbOperationsService implemen
 
         NamedParameterStatement p= new NamedParameterStatement(connection, query);
         p.setInt("taskDefinitionId", taskDefinitionId);
-        p.setInt("csStatus", csState.isGranted() ? 1 : 0);
+        p.setInt("csStatus", csState.isGranted() ? 0 : 1);
         p.setInt("csTaskExecutionId", Integer.parseInt(csState.getGrantedToExecution()));
         p.setString("csQueue", csState.getQueueString());
 

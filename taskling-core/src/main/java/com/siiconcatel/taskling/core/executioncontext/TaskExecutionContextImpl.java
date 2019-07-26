@@ -143,7 +143,6 @@ public class TaskExecutionContextImpl implements TaskExecutionContext {
 
         startedCalled = true;
 
-        cleanUpOldData();
         TaskExecutionStartRequest startRequest = createStartRequest(referenceValue);
 
         try
@@ -151,6 +150,8 @@ public class TaskExecutionContextImpl implements TaskExecutionContext {
             TaskExecutionStartResponse response = taskExecutionRepository.start(startRequest);
             taskExecutionInstance.setTaskExecutionId(response.getTaskExecutionId());
             taskExecutionInstance.setExecutionTokenId(response.getExecutionTokenId());
+
+            cleanUpOldData();
 
             if (response.getGrantStatus() == GrantStatus.Denied)
             {

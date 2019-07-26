@@ -1057,7 +1057,7 @@ public class BlockRepositoryMsSql extends DbOperationsService implements BlockRe
             Object[] dr = new Object[5];
             dr[0] = blockId;
 
-            if (value.length() > compressionThreshold)
+            if (compressionThreshold > -1 && value.length() > compressionThreshold)
             {
                 dr[1] = null;
                 dr[2] = LargeValueCompressor.zip(value);

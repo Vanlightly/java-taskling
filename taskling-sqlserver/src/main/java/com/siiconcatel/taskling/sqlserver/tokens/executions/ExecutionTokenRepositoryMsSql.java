@@ -32,6 +32,7 @@ public class ExecutionTokenRepositoryMsSql extends DbOperationsService implement
         response.setStartedAt(Instant.now());
 
         try (Connection connection = createNewConnection(tokenRequest.getTaskId())) {
+            connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
             acquireRowLock(tokenRequest.getTaskDefinitionId(), tokenRequest.getTaskExecutionId(), connection);
@@ -65,6 +66,7 @@ public class ExecutionTokenRepositoryMsSql extends DbOperationsService implement
     public void returnExecutionToken(TokenRequest tokenRequest, String executionTokenId)
     {
         try (Connection connection = createNewConnection(tokenRequest.getTaskId())) {
+            connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
             acquireRowLock(tokenRequest.getTaskDefinitionId(), tokenRequest.getTaskExecutionId(), connection);
